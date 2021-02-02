@@ -1,15 +1,15 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { CommentsBox } from "../components/CommentsBox";
-import { Pagination } from "../components/Pagination";
-import { PER_PAGE } from "../constants";
-import { LoadingSpinner } from "../loader/LoadingSpinner";
-import { allStoriesData, sampleStories } from "../ApiService";
+import React, { Fragment, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { CommentsBox } from '../components/CommentsBox';
+import { Pagination } from '../components/Pagination';
+import { PER_PAGE } from '../constants';
+import { LoadingSpinner } from '../components/loader/LoadingSpinner';
+import { allStoriesData, sampleStories } from '../ApiService';
 
 export const Home = () => {
     const [data, setData] = useState([]);
     const [showStory, setStory] = useState(false);
-    const [idStory, setIdStory] = useState("");
+    const [idStory, setIdStory] = useState('');
     const [allStories, setStories] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -35,8 +35,8 @@ export const Home = () => {
         Promise.all(requests)
             .then(responses => Promise.all(responses.map(r => r.json())))
             .then(stories => {
-                setData(stories);
                 setLoading(false);
+                setData(stories);
             });
     }, [page, allStories]);
 
@@ -46,50 +46,50 @@ export const Home = () => {
     };
 
     return (
-        <div className="container">
+        <div className="md:container mt-6 md:pl-1 bg-body min-h-content md:min-h-full md:pb-3 last:mb-9">
             {loading && <LoadingSpinner />}
             {!loading && data && allStories && (
                 <>
-                    <table>
-                        <tbody>
-                            {data.map((story, index) => {
-                                return (
-                                    <Fragment key={story.id}>
-                                        <tr>
-                                            <td>
-                                                <div>
-                                                    <span>{allStories.findIndex(item => item === story.id) + 1}.</span>
+                    {data.map(story => {
+                        return (
+                            <Fragment key={story.id}>
+                                <div className="flex px-2 ">
+                                    <div className="w-1/12 md:w-7">
+                                        {allStories.findIndex(item => item === story.id) + 1}.
+                                    </div>
+                                    <div className="w-11/12 ml-1 md:ml-2">
+                                        <div>
+                                            <a
+                                                className="text-black hover:underline"
+                                                href={`${story.url}`}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                {story.title}{' '}
+                                            </a>
+                                        </div>
+                                        <div className="flex text-xs text-gray-600">
+                                            <span className="pr-1">{story.score} points</span>
+                                            <span className="pr-1">{story.kids ? story.kids.length : 0} comments</span>
+                                            {story.kids && (
+                                                <div
+                                                    className="ml-1 hover:text-red-500 cursor-pointer"
+                                                    onClick={() => showComents(story.id)}
+                                                >
+                                                    {' '}
+                                                    {showStory && idStory === story.id
+                                                        ? 'Hide comments'
+                                                        : 'Show comments'}
                                                 </div>
-                                            </td>
-                                            <td>
-                                                <div className="title-storie">
-                                                    <a href={`${story.url}`}>{story.title}</a>
-                                                </div>
-                                                <div className="info-storie">
-                                                    <span>{story.score} points</span>
-                                                    <span> {story.kids ? story.kids.length : 0} comments</span>
-                                                    {story.kids ? (
-                                                        <div
-                                                            className="show-comments"
-                                                            onClick={() => showComents(story.id)}
-                                                        >
-                                                            {" "}
-                                                            {showStory && idStory === story.id
-                                                                ? "Hide comments"
-                                                                : "Show comments"}
-                                                        </div>
-                                                    ) : (
-                                                        ""
-                                                    )}
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            )}
+                                        </div>
                                         {showStory && idStory === story.id && <CommentsBox idComents={story.kids} />}
-                                    </Fragment>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                            </Fragment>
+                        );
+                    })}
+
                     <Pagination page={page} allStories={allStories} />
                 </>
             )}

@@ -1,16 +1,14 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-export const Navbar = () => {
-    return (
-        <nav className="navbar">
-            <ol>
-                <li className="page-link">
-                    <NavLink to="/" exact>
+export const Navbar = () => (
+    <nav className="flex text-xl px-10 bg-navbar">
+        <ol>
+            <li className="mr-2">
+                <NavLink to="/" exact>
                     Hacker News
-                    </NavLink>
-                </li>
-            </ol>
-        </nav>
-    );
-};
+                </NavLink>
+            </li>
+        </ol>
+    </nav>
+);
