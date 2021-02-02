@@ -46,7 +46,7 @@ export const Home = () => {
     };
 
     return (
-        <div className="md:container mt-6 md:pl-1 bg-body min-h-content md:min-h-full md:pb-3 last:mb-9">
+        <div className="conteiner-list md:container md:pl-1 bg-body md:min-h-full md:pb-3 last:mb-10">
             {loading && <LoadingSpinner />}
             {!loading && data && allStories && (
                 <>
